@@ -10,7 +10,7 @@
 /**
  * 로그인할 때 필요한 멤버 레벨입니다. 이 레벨 이상의 멤버는 자동 로그인됩니다.
  */
-define('K8_G4_REQUIRED_MEMBER_LEVEL', 9);
+define('K8_G4_REQUIRED_MEMBER_LEVEL', 6);
 
 /**
  * 그누보드의 경로입니다. 스킨 파일의 위치가 아닌, 치비툴 index.php 의 위치를 기준으로 기재해야 합니다.
@@ -58,17 +58,17 @@ function k8_get_g4_member_level_in_chibi($g4_path) {
 
 	$session_content = k8_get_g4_session_string_in_chibi($g4['path']);
 	if (empty($session_content)) {
-		return 9999;
+		return -1;
 	}
 
 	$g4_session_array =  k8_parse_session_string($session_content);
 	if (!isset($g4_session_array['ss_mb_id'])) {
-		return 9999;
+		return -1;
 	}
 
 	$g4_member_level = k8_select_g4_member_level($g4_session_array['ss_mb_id'], $g4['member_table']);
 	if (!$g4_member_level) {
-		return 9999;
+		return -1;
 	}
 
 	return $g4_member_level;
@@ -77,7 +77,7 @@ function k8_get_g4_member_level_in_chibi($g4_path) {
 if ($_SESSION['session_key_cookie']!=md5($cid.'+'.session_id())) {
   $k8_g4_member_level = k8_get_g4_member_level_in_chibi(K8_G4_PATH);
 
-  if ($k8_g4_member_level <= K8_G4_REQUIRED_MEMBER_LEVEL)  {
+  if ($k8_g4_member_level >= K8_G4_REQUIRED_MEMBER_LEVEL)  {
     $_SESSION['session_key_cookie']=md5($cid.'+'.session_id());
   }
 }
