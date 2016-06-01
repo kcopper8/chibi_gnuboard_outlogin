@@ -74,7 +74,9 @@ function k8_get_g4_member_level_in_chibi($g4_path) {
 	return $g4_member_level;
 }
 
-if ($_SESSION['session_key_cookie']!=md5($cid.'+'.session_id())) {
+$ret_pos = strpos($_SERVER["SCRIPT_FILENAME"], 'admin.php');
+
+if ($ret_pos === false && $_SESSION['session_key_cookie']!=md5($cid.'+'.session_id())) {
   $k8_g4_member_level = k8_get_g4_member_level_in_chibi(K8_G4_PATH);
 
   if ($k8_g4_member_level >= K8_G4_REQUIRED_MEMBER_LEVEL)  {
